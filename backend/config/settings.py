@@ -35,7 +35,7 @@ THIRD_PART_APPS = [
     "corsheaders",
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = ["products"]
 
 INSTALLED_APPS += THIRD_PART_APPS + LOCAL_APPS
 
