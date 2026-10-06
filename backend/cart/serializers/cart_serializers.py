@@ -5,7 +5,7 @@ from cart.models import Cart, CartItem
 class CartItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source="product.name", read_only=True)
     product_price = serializers.DecimalField(
-        source="product.price", max_digits=10, decimal_places=2, read_ony=True
+        source="product.price", max_digits=10, decimal_places=2, read_only=True
     )
     product_image = serializers.ImageField(source="product.image", read_only=True)
 
@@ -15,7 +15,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_ony=True)
+    items = CartItemSerializer(many=True, read_only=True)
     total = serializers.ReadOnlyField()
 
     class Meta:
