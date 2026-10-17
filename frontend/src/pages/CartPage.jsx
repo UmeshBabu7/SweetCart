@@ -33,7 +33,7 @@ function CartPage() {
                   <h2 className="text-lg font-semibold">{item.product_name}</h2>
 
                   <p className="text-gray-600">
-                    ${Number(item.product_price).toFixed(2)}
+                    Rs.{Number(item.product_price).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ function CartPage() {
           <div className="border-t pt-4 mt-4 flex justify-between items-center">
             <h2 className="text-xl font-bold">Total:</h2>
 
-            <p className="text-xl font-semibold">${Number(total).toFixed(2)}</p>
+            <p className="text-xl font-semibold">Rs.{Number(total).toFixed(2)}</p>
           </div>
         </div>
       )}
