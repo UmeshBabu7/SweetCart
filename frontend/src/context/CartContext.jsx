@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
     try {
       const res = await fetch(`${BASEURL}/api/cart/`);
       const data = await res.json();
-      setCartItems(data.cartItems || []);
+      setCartItems(data.items || []);
       setTotal(data.total || 0);
     } catch (error) {
       console.error("Error fetching cart", error);
