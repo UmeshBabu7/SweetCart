@@ -35,7 +35,7 @@ THIRD_PART_APPS = [
     "corsheaders",
 ]
 
-LOCAL_APPS = ["products", "cart"]
+LOCAL_APPS = ["products", "cart", "orders"]
 
 INSTALLED_APPS += THIRD_PART_APPS + LOCAL_APPS
 
@@ -114,9 +114,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 import os
+
 STATIC_URL = "static/"
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
