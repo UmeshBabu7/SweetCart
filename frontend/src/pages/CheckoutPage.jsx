@@ -1,0 +1,133 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
+function CheckoutPage() {
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    payment_method: "COD",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const nav = useNavigate();
+  const { clearCart } = useCart();
+  const BASEURL = import.meta.env.VITE_DJANGO_BASE_URL;
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate name and address
+    if (!form.name.trim() || !form.address.trim()) {
+      alert("Name and address are required");
+      return;
+    }
+
+    // Validate phone
+    if (!/^\d{10}$/.test(form.phone)) {
+      alert("Enter a valid 10-digit phone number");
+      return;
+    }
+
+    // Validate payment method
+    if (!["COD", "ONLINE"].includes(form.payment_method)) {
+      alert("Please select a valid payment method");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${BASEURL}/api/orders/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        clearCart();
+        alert("Order placed successfully!");
+        nav("/");
+      } else {
+        alert(data.error || "Order failed");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="pt-20 p-6">
+      <div className="max-w-lg mx-auto bg-white p-6 shadow rounded">
+        <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Your Name"
+            required
+            className="w-full p-2 border rounded"
+          />
+
+          <input
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+            placeholder="Address"
+            required
+            className="w-full p-2 border rounded"
+          />
+
+          <input
+            name="phone"
+            type="tel"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="10-digit Phone Number"
+            required
+            className="w-full p-2 border rounded"
+          />
+
+          <select
+            name="payment_method"
+            value={form.payment_method}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          >
+            <option value="COD">Cash on Delivery</option>
+            <option value="ONLINE">Online Payment</option>
+          </select>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-2 rounded disabled:opacity-50"
+          >
+            {loading ? "Placing Order..." : "Place Order"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default CheckoutPage;

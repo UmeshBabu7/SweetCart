@@ -1,4 +1,5 @@
 import { useCart } from "../context/CartContext";
+import { Link } from "react-router-dom";
 
 function CartPage() {
   const { cartItems, total, removeFromCart, updateQuantity } = useCart();
@@ -68,7 +69,15 @@ function CartPage() {
           <div className="border-t pt-4 mt-4 flex justify-between items-center">
             <h2 className="text-xl font-bold">Total:</h2>
 
-            <p className="text-xl font-semibold">Rs.{Number(total).toFixed(2)}</p>
+            <p className="text-xl font-semibold">
+              Rs.{Number(total).toFixed(2)}
+            </p>
+            <Link
+              to="/checkout"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
+            >
+              Proceed to Checkout
+            </Link>
           </div>
         </div>
       )}
