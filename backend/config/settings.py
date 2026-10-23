@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from decouple import config
 from datetime import timedelta
 
@@ -33,9 +34,10 @@ INSTALLED_APPS = [
 THIRD_PART_APPS = [
     "rest_framework",
     "corsheaders",
+    "rest_framework_simplejwt",
 ]
 
-LOCAL_APPS = ["products", "cart", "orders"]
+LOCAL_APPS = ["products", "cart", "orders", "accounts"]
 
 INSTALLED_APPS += THIRD_PART_APPS + LOCAL_APPS
 
@@ -134,3 +136,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=False, cast=bool)
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}

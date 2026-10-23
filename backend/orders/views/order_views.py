@@ -1,12 +1,14 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from cart.models.cart_models import Cart
 from orders.models.order_models import Order
 from orders.models.orderitems_models import OrderItem
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def create_order(request):
     data = request.data
 

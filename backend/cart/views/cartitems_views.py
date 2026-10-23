@@ -1,6 +1,6 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from products.models import Product
 from cart.models import CartItem, Cart
@@ -8,6 +8,7 @@ from cart.serializers import CartSerializer, CartItemSerializer
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def add_to_cart(request):
     product_id = request.data.get("product_id")
     product = Product.objects.get(id=product_id)
@@ -24,6 +25,7 @@ def add_to_cart(request):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def remove_from_cart(request):
     item_id = request.data.get("item_id")
     CartItem.objects.filter(id=item_id).delete()
@@ -31,6 +33,7 @@ def remove_from_cart(request):
 
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def update_cart_quantity(request):
     item_id = request.data.get("item_id")
     quantity = request.data.get("quantity")
