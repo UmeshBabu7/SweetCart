@@ -12,7 +12,7 @@ from cart.serializers import CartSerializer, CartItemSerializer
 def add_to_cart(request):
     product_id = request.data.get("product_id")
     product = Product.objects.get(id=product_id)
-    cart, created = Cart.objects.get_or_create(user=None)
+    cart, created = Cart.objects.get_or_create(user=request.user)
     item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
     if not created:

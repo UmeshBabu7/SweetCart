@@ -38,7 +38,7 @@ def create_order(request):
         )
 
     # Get logged-in user's cart
-    cart = Cart.objects.filter(user=None).first()
+    cart = Cart.objects.filter(user=request.user).first()
 
     if not cart:
         return Response({"error": "Cart not found"}, status=status.HTTP_400_BAD_REQUEST)
@@ -52,7 +52,7 @@ def create_order(request):
     total = sum(item.product.price * item.quantity for item in items)
 
     # Create order and items
-    order = Order.objects.create(user=None, total_amount=total)
+    order = Order.objects.create(user=request.user, total_amount=total)
 
     for item in items:
         OrderItem.objects.create(

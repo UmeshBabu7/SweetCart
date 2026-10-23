@@ -9,6 +9,6 @@ from cart.serializers import CartSerializer
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_cart(request):
-    cart, created = Cart.objects.get_or_create(user=None)
+    cart, created = Cart.objects.get_or_create(user=request.user)
     serializer = CartSerializer(cart)
     return Response(serializer.data)
